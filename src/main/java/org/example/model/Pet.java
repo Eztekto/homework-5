@@ -15,6 +15,9 @@ public class Pet{
 	@SerializedName("id")
 	private int id;
 
+	@SerializedName("petId")
+	private int petId;
+
 	@SerializedName("category")
 	private Category category;
 
@@ -48,6 +51,10 @@ public class Pet{
 		return id;
 	}
 
+	public int getPetId() {return petId;}
+
+	public void setPetId(int petId) {this.petId = petId;}
+
 	public void setCategory(Category category){
 		this.category = category;
 	}
@@ -78,7 +85,8 @@ public class Pet{
 			"Pet{" + 
 			"photoUrls = '" + photoUrls + '\'' + 
 			",name = '" + name + '\'' + 
-			",id = '" + id + '\'' + 
+			",id = '" + id + '\'' +
+			",petId = '" + petId + '\'' +
 			",category = '" + category + '\'' + 
 			",tags = '" + tags + '\'' + 
 			",status = '" + status + '\'' + 
