@@ -28,7 +28,7 @@ public class PetApiTest {
         // в конкретных запросах. Подробнее тут: https://habr.com/ru/post/421005/
         RestAssured.requestSpecification = new RequestSpecBuilder()
                 .setBaseUri("https://petstore.swagger.io/v2/") // задаём базовый адрес каждого ресурса
-                .addHeader("api_key", System.getProperty("api.key")) // задаём заголовок с токеном для авторизации
+                .addHeader("api_key", "Nemirov") // задаём заголовок с токеном для авторизации
                 // обязательно учитывайте, что любые приватные данные необходимо хранить в отдельных файлах, которые НЕ публикуютя
                 // в открытых репозиториях (в закрытых тоже лучше не публиковать)
                 .setAccept(ContentType.JSON) // задаём заголовок accept
@@ -39,7 +39,7 @@ public class PetApiTest {
         // но интереснее в книжке Effective Java
 
         //Здесь задаётся фильтр, позволяющий выводить содержание ответа,
-        // также к нему можно задать условия в параметрах конструктора, которм должен удовлетворять ответ (например код ответа)
+        // также к нему можно задать условия в параметрах конструктора, которым должен удовлетворять ответ (например код ответа)
         RestAssured.filters(new ResponseLoggingFilter());
     }
 
@@ -56,7 +56,7 @@ public class PetApiTest {
         pet.setName(name);
 
         given()  // часть стандартного синтаксиса BDD. Означает предварительные данные. Иначе говоря ДАНО:
-                .body(pet) // указываем что  помещаем в тело запроса. Поскольку у нас подключен Gson, он преобразуется в JSON
+                .body(pet) // указываем что помещаем в тело запроса. Поскольку у нас подключен Gson, он преобразуется в JSON
             .when()   // КОГДА:
                 .post("/pet") // выполняем запрос методом POST к ресурсу /pet, при этом используется ранее
                 // созданная "шапка". Именно в этом методе создаётся "текстовый файл" запроса, он отправляется
@@ -98,16 +98,16 @@ public class PetApiTest {
     }
 
     @Test
-    public void tetDelete() throws IOException {
+    public void testDelete() throws IOException {
         System.getProperties().load(ClassLoader.getSystemResourceAsStream("my.properties"));
         given()
-                .pathParam("petId", System.getProperty("petId"))
+                .pathParam("petId", 12345)
             .when()
                 .delete("/pet/{petId}")
             .then()
                 .statusCode(200);
         given()
-                .pathParam("petId", System.getProperty("petId"))
+                .pathParam("petId", 12345)
              .when()
                 .get("/pet/{petId}")
              .then()
