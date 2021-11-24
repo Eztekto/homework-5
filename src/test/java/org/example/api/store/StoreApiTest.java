@@ -1,11 +1,13 @@
 package org.example.api.store;
 
+
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
+import org.example.model.Order;
 import org.example.model.Pet;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -32,21 +34,20 @@ public class StoreApiTest {
 
         RestAssured.filters(new ResponseLoggingFilter());
     }
-    @Test
+    @Test(priority=1)
     public void placeOrderTest() {
-        Pet pet = new Pet();
-        int id = 1;
-        int petId = 1;
-        pet.setId(id);
-        pet.setPetId(petId);
+       Order order = new Order();
+        int petId = 1, id = 1;
+        order.setId(id);
+        order.setPetId(petId);
         given()
-                .body(pet)
+                .body(order)
                 .when()
                 .post("/store/order")
                 .then()
                 .statusCode(200);
 
-        Pet actual =
+        Order actual =
                 given()
                         .pathParam("orderId", petId)
                         .when()
@@ -54,13 +55,13 @@ public class StoreApiTest {
                         .then()
                         .statusCode(200)
                         .extract().body()
-                        .as(Pet.class);
+                        .as(Order.class);
 
-        Assert.assertEquals(actual.getId(), pet.getId());
+        Assert.assertEquals(actual.getId(), order.getId());
 
     }
 
-    @Test
+    @Test(priority=2)
     public void deleteOrderTest() throws IOException {
         System.getProperties().load(ClassLoader.getSystemResourceAsStream("my.properties"));
         given()
