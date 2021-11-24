@@ -37,9 +37,9 @@ public class StoreApiTest {
     @Test(priority=1)
     public void placeOrderTest() {
        Order order = new Order();
-        int petId = 1, id = 1;
+        int id = 10;
+        order.setPetId(id);
         order.setId(id);
-        order.setPetId(petId);
         given()
                 .body(order)
                 .when()
@@ -49,7 +49,7 @@ public class StoreApiTest {
 
         Order actual =
                 given()
-                        .pathParam("orderId", petId)
+                        .pathParam("orderId", id)
                         .when()
                         .get("/store/order/{orderId}")
                         .then()
@@ -57,7 +57,7 @@ public class StoreApiTest {
                         .extract().body()
                         .as(Order.class);
 
-        Assert.assertEquals(actual.getId(), order.getId());
+        Assert.assertEquals(actual.getPetId(), order.getPetId());
 
     }
 
@@ -65,14 +65,14 @@ public class StoreApiTest {
     public void deleteOrderTest() throws IOException {
         System.getProperties().load(ClassLoader.getSystemResourceAsStream("my.properties"));
         given()
-                    .pathParam("orderId", 1)
+                    .pathParam("orderId", 10)
                 .when()
                     .delete("/store/order/{orderId}")
                 .then()
                     .statusCode(200);
 
         given()
-                    .pathParam("orderId", 1)
+                    .pathParam("orderId", 10)
                 .when()
                     .get("/store/order/{orderId}")
                 .then()
